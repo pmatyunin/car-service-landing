@@ -154,31 +154,63 @@ document.querySelectorAll(".btn").forEach(button => {
 /* ======================================
         FORM
 ====================================== */
-
 const form = document.querySelector(".contact-form");
 
+const TOKEN = "8892427054:AAGqTUx7-wDSYYtfFZxOD3JTSHaUu9hGaSQ";
+const CHAT_ID = "8332637886";
+
 if (form) {
-
-    form.addEventListener("submit", function (e) {
-
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const button = form.querySelector("button");
 
-        button.textContent = "Отправлено ✓";
+        const name = form.querySelectorAll("input")[0].value;
+        const phone = form.querySelectorAll("input")[1].value;
+        const car = form.querySelectorAll("input")[2].value;
+        const comment = form.querySelector("textarea").value;
+
+        const text = `
+🚗 Новая заявка
+
+👤 Имя: ${name}
+📞 Телефон: ${phone}
+🚘 Автомобиль: ${car}
+💬 Комментарий: ${comment}
+        `;
 
         button.disabled = true;
+        button.textContent = "Отправка...";
+
+        try {
+            const response = await fetch(
+                `https://api.telegram.org/bot${TOKEN}/sendMessage`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: text,
+                    }),
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Ошибка отправки");
+            }
+
+            button.textContent = "Отправлено ✓";
+            form.reset();
+        } catch (error) {
+            console.error(error);
+            button.textContent = "Ошибка";
+        }
 
         setTimeout(() => {
-
-            form.reset();
-
             button.disabled = false;
-
             button.textContent = "Записаться";
-
         }, 2500);
-
     });
-
 }
