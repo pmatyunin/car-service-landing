@@ -326,7 +326,7 @@ button {
       rgba(255, 140, 26, 0.1),
       transparent 35%
     ),
-    linear-gradient(rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0.92)),
+    linear-gradient(rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0.65)),
     url("images/carbon1.png") center/cover no-repeat;
 }
 
